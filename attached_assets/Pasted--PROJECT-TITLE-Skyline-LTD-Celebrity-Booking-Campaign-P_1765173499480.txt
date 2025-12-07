@@ -1,0 +1,369 @@
+# 🎯 **PROJECT TITLE**
+
+**Skyline LTD — Celebrity Booking & Campaign Platform**
+(Owned under SONY Company, headquartered in New York, USA)
+
+---
+
+# 🚀 **PROJECT OVERVIEW**
+
+Build a full production-ready web application named **Skyline LTD**, a premium celebrity engagement platform where users can:
+
+### ✔ Book celebrities
+
+### ✔ Request celebrity **campaigns**
+
+### ✔ Chat with celebrity agents (admin impersonation)
+
+### ✔ Fund their **USD wallet using crypto only**
+
+### ✔ Manage bookings & campaigns
+
+### ✔ Receive notifications
+
+### ✔ Download PDF invoices
+
+### ✔ View analytics
+
+There is **NO celebrity login**, **NO KYC**, and **NO agent portal**.
+**Admins handle all operations.**
+
+The platform must look **extremely modern**, **premium**, **high-end**, and **mobile-first**, with:
+
+* Smooth animations
+* Page transitions
+* 3D text effects
+* Animated hero sections
+* Modern gradient overlays
+* Clean layout
+* Fast page performance
+
+**80% of users are mobile**, so everything must be designed mobile-first.
+
+---
+
+# 🧱 **TECH STACK**
+
+### Backend:
+
+* Python 3.x
+* Flask
+* Flask-SQLAlchemy
+* Flask-JWT or secure session auth
+* PostgreSQL
+* Flask-Mail
+* Jinja2
+* Coingecko/Binance API for live crypto rates
+* WeasyPrint or ReportLab for PDF
+
+### Frontend:
+
+* HTML5
+* TailwindCSS (latest)
+* Alpine.js or minimal JavaScript
+* CSS animations
+* Tailwind transitions
+* 3D text using CSS transform layers
+* Mobile-first responsive grid
+
+---
+
+# 🎨 **BRANDING & UI GUIDELINES**
+
+### **Brand Name**
+
+Skyline LTD
+
+### **Brand Identity**
+
+High-end, celebrity-grade, luxury entertainment mixed with corporate professionalism.
+
+### **Color Palette**
+
+Use these exact premium colors:
+
+| Purpose    | Color           | Hex         |
+| ---------- | --------------- | ----------- |
+| Primary    | Royal Navy Blue | **#0A1A2F** |
+| Accent     | Skyline Cyan    | **#00B8D4** |
+| Highlight  | Luxury Gold     | **#F5C542** |
+| Background | Pure White      | **#FFFFFF** |
+| Section BG | Slate Gray      | **#ECEFF1** |
+
+### **Typography**
+
+* Headings → **Poppins ExtraBold**
+* Body → **Inter Regular**
+
+### **Design Requirements**
+
+* 3D text on hero headings
+* Smooth section fade-ins
+* Hover zoom effects on cards
+* Celeb images with rounded-xl & soft shadows
+* Gradient overlays in banners
+* Sticky header & mobile drawer menu
+* Bottom navbar for mobile user dashboard
+* Animated slider for celebrity showcase
+* Parallax sections in homepage
+
+---
+
+# 📱 **RESPONSIVE DESIGN**
+
+* 80% mobile usage → mobile-first design
+* All pages optimized for small screens
+* Large buttons, clean spacing, readable text
+* Touch-friendly interactions
+* Animated mobile menu
+
+---
+
+# 💰 **WALLET SYSTEM (USD ONLY)**
+
+### **Users do not hold crypto.
+
+User wallet balance = USD only.**
+
+### Deposit Flow:
+
+1. User enters USD amount
+2. Selects coin: **BTC, ETH, USDT(TRC20)**
+3. System fetches live crypto price
+4. Show exact crypto amount required
+5. Show admin’s crypto wallet address
+6. User sends crypto
+7. User clicks **Confirm Payment**
+8. System creates **Pending Deposit Task**
+9. Admin manually verifies incoming payment
+10. If approved → wallet credited in USD
+11. Auto-generate PDF receipt
+
+### Admin controls:
+
+* BTC wallet address
+* ETH wallet address
+* USDT wallet address
+
+Editable inside admin panel.
+
+---
+
+# ⭐ **BOOKING FEATURES**
+
+### Users:
+
+* Browse celebrities
+* View details
+* Pay USD from wallet
+* Booking request created
+* Admin sees booking
+* Admin chats with user as celeb agent
+
+---
+
+# 📢 **CAMPAIGN FEATURE (NEW)**
+
+A **second type of engagement**, separate from bookings.
+
+### Users can:
+
+* Select a celebrity for campaign work
+* Campaign examples:
+
+  * Brand promotion
+  * Endorsement
+  * Social media shoutout
+  * Advertising
+* Click **“Contact Agent for Campaign”**
+* A campaign request is created
+* Chat thread opens
+* Admin chats posing as celebrity agent
+* Admin can approve/reject campaign
+* Campaign can include a custom negotiated price
+
+### Admin Panel:
+
+* View all campaign requests
+* Filter by celebrity / user / date / status
+* Chat with user
+* Adjust price
+* Mark as complete
+
+### User Dashboard:
+
+* “My Campaigns” tab
+* Campaign status tracking
+* Chat messaging
+* Notifications
+
+---
+
+# 💬 **CHAT SYSTEM**
+
+A unified message center for:
+
+* Booking chats
+* Campaign chats
+
+Users see all chats in a single “Messages” center.
+
+Admin sees:
+
+* All chats
+* Booking threads
+* Campaign threads
+* Ability to reply as **celebrity agent**
+* Clear banner:
+  **“You are now chatting as: [Celebrity Name] – Campaign/Booking”**
+
+---
+
+# 🔔 **NOTIFICATION SYSTEM**
+
+Both email + in-app notifications.
+
+Types:
+
+* Deposit pending
+* Deposit approved
+* Deposit rejected
+* New message
+* Booking confirmed
+* Campaign confirmed
+* Booking completed
+* Campaign completed
+
+User notification center must include:
+
+* Unread counter
+* List view
+* Swipe gestures on mobile
+
+---
+
+# 🧾 **PDF RECEIPTS**
+
+Generate PDF for:
+
+* Deposit
+* Booking
+* Campaign
+
+Each PDF must include:
+
+* Skyline LTD branding
+* New York office address
+* Transaction metadata
+* Amount
+* Type
+* Admin signature
+* Timestamp
+
+---
+
+# 🛠️ **ADMIN PANEL (FULL CONTROL)**
+
+### Admin features:
+
+* Manage users
+* Manage celebrities
+* Approve/reject deposits
+* View bookings
+* View campaigns
+* Chat as celebrity agent
+* Set crypto wallet addresses
+* Manage pricing
+* Download all invoices
+* View analytics dashboard
+* View admin activity logs
+
+### Admin logs must include:
+
+* All balance adjustments
+* All chat replies
+* All deposit approvals
+* All price edits
+* All user bans
+
+---
+
+# 🗄️ **DATABASE STRUCTURE**
+
+### users
+
+id, email, password, phone, country, balance_usd, status, created_at
+
+### celebrities
+
+id, name, price_usd, category, image_url, bio, status, created_at
+
+### bookings
+
+id, user_id, celebrity_id, price_usd, status, created_at
+
+### campaigns
+
+id, user_id, celebrity_id, custom_price_usd, description, status, created_at
+
+### messages
+
+id, thread_id, type (booking/campaign), sender (admin/user), text, created_at
+
+### deposits
+
+id, user_id, amount_usd, coin, crypto_amount_expected, status, created_at
+
+### notifications
+
+id, user_id, title, message, is_read, created_at
+
+### admin_logs
+
+id, admin_id, action, metadata, created_at
+
+---
+
+# 🌐 **PUBLIC PAGES**
+
+1. Home (hero 3D text + slider + animations)
+2. About Skyline LTD
+3. Celebrity Directory
+4. Celebrity Profile
+5. Login
+6. Register
+7. Contact
+8. Terms & Conditions
+9. Privacy Policy
+
+---
+
+# 📊 **USER DASHBOARD**
+
+Tabs:
+
+* Wallet
+* Bookings
+* Campaigns
+* Messages
+* Notifications
+* Analytics
+* Profile
+
+Bottom fixed navigation for mobile.
+
+---
+
+# 🎁 **FINAL REQUIREMENTS**
+
+* Modern
+* Beautiful
+* Animated
+* 3D headings
+* Gradient backgrounds
+* Hero slides
+* Mobile-first
+* Fast
+* Secure
+* Complete
+* Ready for production
