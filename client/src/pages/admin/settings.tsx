@@ -36,19 +36,26 @@ export default function AdminSettings() {
 
   const saveMutation = useMutation({
     mutationFn: async () => {
-      return apiRequest("POST", "/api/admin/settings", {
-        BTC_WALLET: wallets.BTC,
-        ETH_WALLET: wallets.ETH,
-        USDT_WALLET: wallets.USDT,
-      });
+      // Send wallet settings as an object with multiple keys
+      const walletData: any = {};
+      if (wallets.BTC !== "") walletData.BTC_WALLET = wallets.BTC;
+      if (wallets.ETH !== "") walletData.ETH_WALLET = wallets.ETH;
+      if (wallets.USDT !== "") walletData.USDT_WALLET = wallets.USDT;
+      
+      return apiRequest("POST", "/api/admin/settings", walletData);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/settings"] });
       queryClient.invalidateQueries({ queryKey: ["/api/settings/wallets"] });
       toast({ title: "Settings saved successfully" });
     },
-    onError: () => {
-      toast({ title: "Failed to save settings", variant: "destructive" });
+    onError: (error: any) => {
+      console.error('Settings save error:', error);
+      toast({ 
+        title: "Failed to save settings", 
+        description: error?.message || "Please check your input and try again.",
+        variant: "destructive" 
+      });
     },
   });
 
