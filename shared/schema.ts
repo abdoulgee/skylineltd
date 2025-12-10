@@ -23,7 +23,7 @@ export const messageTypeEnum = pgEnum("message_type", ["booking", "campaign"]);
 export const messageSenderEnum = pgEnum("message_sender", ["user", "admin"]);
 export const userRoleEnum = pgEnum("user_role", ["user", "admin"]);
 
-// Session storage table for Replit Auth
+// Session storage table
 export const sessions = pgTable(
   "sessions",
   {
