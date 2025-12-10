@@ -51,7 +51,7 @@ export default function WalletPage() {
   });
 
   const depositMutation = useMutation({
-    mutationFn: async (data: { amountUsd: number; coin: string; cryptoAmount: number }) => {
+    mutationFn: async (data: { amountUsd: number; coin: string }) => {
       return apiRequest("POST", "/api/deposits", data);
     },
     onSuccess: () => {
@@ -63,10 +63,11 @@ export default function WalletPage() {
       setDepositOpen(false);
       resetForm();
     },
-    onError: () => {
+    onError: (error: any) => {
+      console.error('Deposit error:', error);
       toast({
         title: "Error",
-        description: "Failed to create deposit. Please try again.",
+        description: error?.message || "Failed to create deposit. Please try again.",
         variant: "destructive",
       });
     },
@@ -107,11 +108,9 @@ export default function WalletPage() {
   };
 
   const handleConfirmPayment = () => {
-    const cryptoAmount = parseFloat(getCryptoAmount());
     depositMutation.mutate({
       amountUsd: parseFloat(amount),
       coin: selectedCoin,
-      cryptoAmount,
     });
   };
 

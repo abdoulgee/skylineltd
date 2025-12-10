@@ -9,6 +9,7 @@ import { useAuth } from "@/hooks/useAuth";
 import Landing from "@/pages/landing";
 import Celebrities from "@/pages/celebrities";
 import CelebrityProfile from "@/pages/celebrity-profile";
+import CelebritiesCampaigns from "@/pages/celebrities-campaigns";
 import About from "@/pages/about";
 import Contact from "@/pages/contact";
 import Terms from "@/pages/terms";
@@ -83,6 +84,7 @@ function Router() {
       <Route path="/" component={Landing} />
       <Route path="/celebrities" component={Celebrities} />
       <Route path="/celebrity/:id" component={CelebrityProfile} />
+      <Route path="/campaigns" component={CelebritiesCampaigns} />
       <Route path="/about" component={About} />
       <Route path="/contact" component={Contact} />
       <Route path="/terms" component={Terms} />
