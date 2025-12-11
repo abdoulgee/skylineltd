@@ -112,6 +112,28 @@ export async function registerRoutes(
     }
   });
 
+  // Health check endpoint for production monitoring
+  app.get("/api/health", async (_req, res) => {
+    try {
+      // Check database connectivity
+      await storage.getSettings();
+      
+      res.json({ 
+        status: "healthy", 
+        timestamp: new Date().toISOString(),
+        version: "1.0.0",
+        environment: process.env.NODE_ENV || "development"
+      });
+    } catch (error) {
+      console.error("Health check failed:", error);
+      res.status(503).json({ 
+        status: "unhealthy", 
+        timestamp: new Date().toISOString(),
+        error: "Database connection failed"
+      });
+    }
+  });
+
   app.get("/api/celebrities", async (req, res) => {
     try {
       const celebrities = await storage.getAllCelebrities();
