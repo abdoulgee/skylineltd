@@ -9,6 +9,7 @@ import {
   insertCampaignSchema,
   insertMessageSchema,
   insertDepositSchema,
+  celebrities,
 } from "@shared/schema";
 import PDFDocument from "pdfkit";
 
@@ -282,6 +283,17 @@ export async function registerRoutes(
         isRead: false,
       });
 
+      // Create initial message thread for the booking
+      const threadId = `booking-${booking.id}`;
+      await storage.createMessage({
+        threadId,
+        threadType: "booking",
+        referenceId: booking.id,
+        sender: "admin",
+        senderUserId: req.user.claims.sub,
+        text: `Hello! Thank you for your booking request for ${celebrity.name}. Our team will review your request and get back to you soon.`,
+      });
+
       broadcastToUser(userId, { type: "notification", message: "New booking created" });
 
       res.status(201).json(booking);
@@ -374,6 +386,17 @@ export async function registerRoutes(
         message: `Your campaign request for ${celebrity?.name || "celebrity"} has been submitted.`,
         type: "campaign",
         isRead: false,
+      });
+
+      // Create initial message thread for the campaign
+      const threadId = `campaign-${campaign.id}`;
+      await storage.createMessage({
+        threadId,
+        threadType: "campaign",
+        referenceId: campaign.id,
+        sender: "admin",
+        senderUserId: req.user.claims.sub,
+        text: `Hello! Thank you for your campaign request for ${celebrity?.name}. Our team will review your request and get back to you soon.`,
       });
 
       res.status(201).json(campaign);
@@ -762,16 +785,44 @@ export async function registerRoutes(
 
   app.post("/api/admin/settings", isAuthenticated, isAdmin, async (req: any, res) => {
     try {
-      const { key, value } = req.body;
-      const setting = await storage.upsertSetting(key, value);
+      const settings = req.body;
       
-      await storage.createAdminLog({
-        adminId: req.user.claims.sub,
-        action: "Updated setting",
-        metadata: { key, value },
-      });
+      // Handle bulk wallet settings
+      if (settings.BTC_WALLET !== undefined || settings.ETH_WALLET !== undefined || settings.USDT_WALLET !== undefined) {
+        const promises = [];
+        
+        if (settings.BTC_WALLET !== undefined) {
+          promises.push(storage.upsertSetting("wallet_btc", settings.BTC_WALLET || ""));
+        }
+        if (settings.ETH_WALLET !== undefined) {
+          promises.push(storage.upsertSetting("wallet_eth", settings.ETH_WALLET || ""));
+        }
+        if (settings.USDT_WALLET !== undefined) {
+          promises.push(storage.upsertSetting("wallet_usdt", settings.USDT_WALLET || ""));
+        }
+        
+        await Promise.all(promises);
+        
+        await storage.createAdminLog({
+          adminId: req.user.claims.sub,
+          action: "Updated wallet settings",
+          metadata: settings,
+        });
+        
+        res.json({ success: true });
+      } else {
+        // Handle single setting
+        const { key, value } = req.body;
+        const setting = await storage.upsertSetting(key, value);
+        
+        await storage.createAdminLog({
+          adminId: req.user.claims.sub,
+          action: "Updated setting",
+          metadata: { key, value },
+        });
 
-      res.json(setting);
+        res.json(setting);
+      }
     } catch (error: any) {
       console.error("Error updating setting:", error);
       res.status(400).json({ message: error.message || "Failed to update setting" });
@@ -780,13 +831,16 @@ export async function registerRoutes(
 
   app.get("/api/admin/stats", isAuthenticated, isAdmin, async (req, res) => {
     try {
-      const [users, celebrities, bookings, campaigns, deposits] = await Promise.all([
+      const [users, activeCelebrities, bookings, campaigns, deposits] = await Promise.all([
         storage.getAllUsers(),
-        storage.getAllCelebrities(),
+        storage.getAllCelebrities(), // This returns only active celebrities
         storage.getAllBookings(),
         storage.getAllCampaigns(),
         storage.getAllDeposits(),
       ]);
+
+      // Also get all celebrities including inactive ones for counting
+      const allCelebrities = await db.select().from(celebrities);
 
       const totalRevenue = deposits
         .filter(d => d.status === "approved")
@@ -798,7 +852,7 @@ export async function registerRoutes(
 
       res.json({
         totalUsers: users.length,
-        totalCelebrities: celebrities.length,
+        totalCelebrities: allCelebrities.length, // Count all celebrities
         totalBookings: bookings.length,
         totalCampaigns: campaigns.length,
         totalRevenue,

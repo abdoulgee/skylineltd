@@ -26,19 +26,21 @@ export default function ProfilePage() {
 
   const updateProfileMutation = useMutation({
     mutationFn: async (data: typeof formData) => {
-      return apiRequest("PATCH", "/api/auth/profile", data);
+      return apiRequest("PATCH", "/api/profile", data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/profile"] });
       toast({
         title: "Profile Updated",
         description: "Your profile has been updated successfully.",
       });
     },
-    onError: () => {
+    onError: (error: any) => {
+      console.error('Profile update error:', error);
       toast({
         title: "Error",
-        description: "Failed to update profile. Please try again.",
+        description: error?.message || "Failed to update profile. Please try again.",
         variant: "destructive",
       });
     },
